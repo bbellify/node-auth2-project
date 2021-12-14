@@ -59,6 +59,7 @@ function findById(user_id) {
     .join('roles as r', 'u.role_id', 'r.role_id')
     .select('user_id', 'username', 'password', 'role_name')
     .where('user_id', user_id)
+    .first()
 }
 
 /**
