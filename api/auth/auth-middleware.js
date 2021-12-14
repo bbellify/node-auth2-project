@@ -1,5 +1,6 @@
 const { default: jwtDecode } = require("jwt-decode");
 const { JWT_SECRET } = require("../secrets"); // use this secret!
+const User = require('../users/users-model')
 
 const restricted = (req, res, next) => {
   /*
@@ -56,6 +57,17 @@ const checkUsernameExists = (req, res, next) => {
       "message": "Invalid credentials"
     }
   */
+  const {username} = req.body
+  User.findBy({username})
+    .then(users => {
+      if (!users) {
+        next({ status: 401, message: 'Invalid credentials'})
+      }
+      else {
+        next()
+      }
+    })
+    .catch(next)
   
 }
 
