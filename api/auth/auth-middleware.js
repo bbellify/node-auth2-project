@@ -59,11 +59,12 @@ const checkUsernameExists = (req, res, next) => {
   */
   const {username} = req.body
   User.findBy({username})
-    .then(users => {
-      if (!users) {
+    .then(user => {
+      if (!user) {
         next({ status: 401, message: 'Invalid credentials'})
       }
       else {
+        req.user = user
         next()
       }
     })
