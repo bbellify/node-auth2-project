@@ -1,4 +1,5 @@
-const { default: jwtDecode } = require("jwt-decode");
+const { default: jwtDecode } = require("jwt-decode"); //eslint-disable-line
+const jwt = require('jsonwebtoken')
 const { JWT_SECRET } = require("../secrets"); // use this secret!
 const User = require('../users/users-model')
 
@@ -22,11 +23,12 @@ const restricted = (req, res, next) => {
   if(!token) {
     return next({ status: 401, message: 'Token required!'})
   }
-  jwtDecode(token, JWT_SECRET, (err, decoded)=> {
+  jwt.verify(token, JWT_SECRET, (err, decoded)=> {
     if (err) {
       return next({ status: 401, message: 'Token invalid'})
     }
     req.decodedJwt = decoded
+    next()
   })
 }
 
